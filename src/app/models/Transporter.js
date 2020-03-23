@@ -14,10 +14,6 @@ class Transporter extends Model {
     );
     return this;
   }
-
-  /* static associate(models) {
-    // this.hasMany(models.)
-  } */
 }
 
 export default Transporter;

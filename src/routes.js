@@ -1,11 +1,18 @@
 import { Router } from 'express';
+import multer from 'multer';
 
 // CONTROLLERS IMPORTS
 import SessionController from './app/controllers/SessionController';
 import RecipientController from './app/controllers/RecipientController';
 import TransporterController from './app/controllers/TransporterController';
+import FileController from './app/controllers/FileController';
+
+import multerConfig from './config/multer';
 
 import authMW from './app/middlewares/auth';
+
+// UPLOAD OBJECT - randomNameMW; .single() method
+const upload = multer(multerConfig);
 
 const routes = new Router();
 
@@ -24,5 +31,11 @@ routes.get('/transporters', TransporterController.index);
 routes.post('/transporters', TransporterController.store);
 routes.put('/transporters', TransporterController.update);
 routes.delete('/transporters/:id', TransporterController.delete);
+// Avatar image
+routes.post(
+  '/transporters/:id/files',
+  upload.single('file'),
+  FileController.store
+);
 
 export default routes;

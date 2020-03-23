@@ -47,20 +47,16 @@ class RecipientController {
     }
 
     // CHECK IF EXISTS IN DATABASE
-    const recipientExists = await Recipient.findOne(
-      {
-        where: { name: req.body.name }
-      }
-    );
+    const recipientExists = await Recipient.findOne({
+      where: { name: req.body.name }
+    });
     if (recipientExists) {
       return res.status(400).json({
         error: 'Recipient already registered'
       });
     }
 
-    const recipient = await Recipient.create(
-      req.body
-    );
+    const recipient = await Recipient.create(req.body);
 
     return res.json(recipient);
   }

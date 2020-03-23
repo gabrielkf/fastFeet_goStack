@@ -4,11 +4,9 @@ import User from '../models/User';
 
 class TransporterController {
   async index(req, res) {
-    const transporters = await Transporter.findAll(
-      {
-        attributes: ['id', 'name', 'email']
-      }
-    );
+    const transporters = await Transporter.findAll({
+      attributes: ['id', 'name', 'email']
+    });
 
     return res.json(transporters);
   }
@@ -29,11 +27,9 @@ class TransporterController {
 
     // check if already exists (by email)
     const { name, email } = req.body;
-    const transporterExists = await Transporter.findOne(
-      {
-        where: { email }
-      }
-    );
+    const transporterExists = await Transporter.findOne({
+      where: { email }
+    });
     if (transporterExists) {
       return res.status(400).json({
         error: 'Transporter already registered'
@@ -41,12 +37,10 @@ class TransporterController {
     }
 
     // creates new entry in POSTGRES
-    const newTransporter = await Transporter.create(
-      {
-        name,
-        email
-      }
-    );
+    const newTransporter = await Transporter.create({
+      name,
+      email
+    });
     return res.json(newTransporter);
   }
 
@@ -60,28 +54,17 @@ class TransporterController {
       });
     }
 
-    const {
-      adminPass,
-      transporterEmail,
-      updates
-    } = req.body;
+    const { adminPass, transporterEmail, updates } = req.body;
 
     // CHECKS ADMIN PASSWORD
-    if (
-      adminPass &&
-      !(await admin.checkPassword(adminPass))
-    ) {
-      return res
-        .status(401)
-        .json({ error: 'Wrong password' });
+    if (adminPass && !(await admin.checkPassword(adminPass))) {
+      return res.status(401).json({ error: 'Wrong password' });
     }
 
     // CHECKS IF USER EXISTS
-    const transporter = await Transporter.findOne(
-      {
-        where: { email: transporterEmail }
-      }
-    );
+    const transporter = await Transporter.findOne({
+      where: { email: transporterEmail }
+    });
     if (!transporter) {
       return res.json({
         error: 'No transporter by that email'
@@ -103,24 +86,14 @@ class TransporterController {
   async delete(req, res) {
     const admin = await User.findByPk(req.userId);
 
-    const {
-      adminPass,
-      transporterEmail
-    } = req.body;
+    const { adminPass, transporterEmail } = req.body;
 
-    if (
-      adminPass &&
-      !(await admin.checkPassword(adminPass))
-    ) {
-      return res
-        .status(401)
-        .json({ error: 'Wrong password' });
+    if (adminPass && !(await admin.checkPassword(adminPass))) {
+      return res.status(401).json({ error: 'Wrong password' });
     }
 
     const { id } = req.params;
-    const transporter = await Transporter.findByPk(
-      id
-    );
+    const transporter = await Transporter.findByPk(id);
 
     if (!transporter) {
       return res.status(400).json({
