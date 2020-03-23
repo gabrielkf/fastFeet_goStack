@@ -31,9 +31,15 @@ routes.get('/transporters', TransporterController.index);
 routes.post('/transporters', TransporterController.store);
 routes.put('/transporters', TransporterController.update);
 routes.delete('/transporters/:id', TransporterController.delete);
-// Avatar image
+// FILES
+routes.get(
+  '/transporters/:id/files',
+  FileController.checkUserExists,
+  FileController.index
+);
 routes.post(
   '/transporters/:id/files',
+  FileController.checkUserExists,
   upload.single('file'),
   FileController.store
 );
