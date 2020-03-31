@@ -5,7 +5,7 @@ import User from '../models/User';
 class TransporterController {
   async index(req, res) {
     const transporters = await Transporter.findAll({
-      attributes: ['id', 'name', 'email']
+      // attributes: ['id', 'name', 'email']
     });
 
     return res.json(transporters);

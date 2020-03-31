@@ -11,7 +11,7 @@ class FileController {
       });
     }
 
-    return res.json(avatar.url);
+    return res.send(avatar.url);
   }
 
   async store(req, res) {
