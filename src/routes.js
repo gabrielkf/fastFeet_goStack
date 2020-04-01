@@ -10,7 +10,7 @@ import DeliverController from './app/controllers/DeliverController';
 
 import multerConfig from './config/multer';
 
-import authMW from './app/middlewares/auth';
+// import authMW from './app/middlewares/auth';
 
 import User from './app/models/User';
 
@@ -37,17 +37,20 @@ routes.get('/recipients', RecipientController.index);
 routes.get('/transporters', TransporterController.index);
 routes.post('/transporters', TransporterController.store);
 routes.put('/transporters', TransporterController.update);
-routes.delete('/transporters/:id', TransporterController.delete);
+routes.delete(
+  '/transporters/:id',
+  TransporterController.delete
+);
 
 // FILES
 routes.get(
   '/transporters/:id/files',
-  FileController.checkUserExists,
+  FileController.checkTransporter,
   FileController.index
 );
 routes.post(
   '/transporters/:id/files',
-  FileController.checkUserExists,
+  FileController.checkTransporter,
   upload.single('file'),
   FileController.store
 );

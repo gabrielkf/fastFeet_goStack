@@ -35,7 +35,9 @@ class DeliverController {
     }
 
     // check if recipient exists
-    const isRecipient = await Recipient.findByPk(recipient_id);
+    const isRecipient = await Recipient.findByPk(
+      recipient_id
+    );
     if (!isRecipient) {
       return res
         .status(400)

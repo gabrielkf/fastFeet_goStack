@@ -3,7 +3,9 @@ import Transporter from '../models/Transporter';
 
 class FileController {
   async index(req, res) {
-    const avatar = await File.findByPk(req.userId.avatar_id);
+    const avatar = await File.findByPk(
+      req.transporter.avatar_id
+    );
 
     if (!avatar) {
       return res.status(400).json({
@@ -11,39 +13,45 @@ class FileController {
       });
     }
 
-    return res.send(avatar.url);
+    return res.json(avatar.url);
   }
 
   async store(req, res) {
-    const user = req.userId;
-
-    const avatar = await File.findByPk(user.avatar_id);
+    const avatar = await File.findByPk(
+      req.transporter.avatar_id
+    );
     if (avatar) {
       return res.status(401).json({
-        error: 'Avatar already exists. Use update() method.'
+        error: 'Avatar already exists.'
       });
     }
 
     const { originalname: name, filename: path } = req.file;
-    const file = await File.create({
+    const newFile = await File.create({
       name,
       path
     });
 
-    user.avatar_id = file.id;
-    await user.save();
+    const transporter = await Transporter.findByPk(
+      req.transporter.avatar_id
+    );
 
-    return res.json(file);
+    transporter.avatar_id = newFile.id;
+    await transporter.save();
+
+    return res.json(newFile);
   }
 
-  async checkUserExists(req, res, next) {
+  async checkTransporter(req, res, next) {
     const { id } = req.params;
 
-    const user = await Transporter.findByPk(id);
-    if (!user) {
-      return res.status(400).json({ error: 'User not found' });
+    const transporter = await Transporter.findByPk(id);
+    if (!transporter) {
+      return res
+        .status(400)
+        .json({ error: 'Transporter not found' });
     }
-    req.userId = user;
+    req.transporter = transporter;
 
     return next();
   }
