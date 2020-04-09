@@ -5,7 +5,7 @@ import User from '../models/User';
 class TransporterController {
   async index(req, res) {
     const transporters = await Transporter.findAll({
-      // attributes: ['id', 'name', 'email']
+      attributes: ['id', 'name', 'email']
     });
 
     return res.json(transporters);
@@ -54,11 +54,20 @@ class TransporterController {
       });
     }
 
-    const { adminPass, transporterEmail, updates } = req.body;
+    const {
+      adminPass,
+      transporterEmail,
+      updates
+    } = req.body;
 
     // CHECKS ADMIN PASSWORD
-    if (adminPass && !(await admin.checkPassword(adminPass))) {
-      return res.status(401).json({ error: 'Wrong password' });
+    if (
+      adminPass &&
+      !(await admin.checkPassword(adminPass))
+    ) {
+      return res
+        .status(401)
+        .json({ error: 'Wrong password' });
     }
 
     // CHECKS IF USER EXISTS
@@ -88,8 +97,13 @@ class TransporterController {
 
     const { adminPass, transporterEmail } = req.body;
 
-    if (adminPass && !(await admin.checkPassword(adminPass))) {
-      return res.status(401).json({ error: 'Wrong password' });
+    if (
+      adminPass &&
+      !(await admin.checkPassword(adminPass))
+    ) {
+      return res
+        .status(401)
+        .json({ error: 'Wrong password' });
     }
 
     const { id } = req.params;

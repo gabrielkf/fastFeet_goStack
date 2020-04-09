@@ -6,28 +6,37 @@ import SessionController from './app/controllers/SessionController';
 import RecipientController from './app/controllers/RecipientController';
 import TransporterController from './app/controllers/TransporterController';
 import FileController from './app/controllers/FileController';
-import DeliverController from './app/controllers/DeliverController';
+import DeliveryController from './app/controllers/DeliveryController';
+import PickupController from './app/controllers/PickupController';
+import ProblemController from './app/controllers/ProblemController';
 
 import multerConfig from './config/multer';
 
-// import authMW from './app/middlewares/auth';
-
-import User from './app/models/User';
+import authMW from './app/middlewares/auth';
 
 // UPLOAD OBJECT - randomNameMW; .single() method
 const upload = multer(multerConfig);
 
 const routes = new Router();
-routes.get('/test', async (req, res) => {
-  const user = await User.findByPk(1);
-  return res.json(user);
-});
+
+//* ROUTES *//
+
+// DELIVERIES ROUTES FOR TRANSPORTERS
+routes.get(
+  '/deliveries/:transporter_id',
+  DeliveryController.index
+);
+routes.put(
+  '/deliveries/:transporter_id/pickup',
+  PickupController.pickup
+);
 
 // SESSION CREATE
 routes.post('/sessions', SessionController.store);
-
 // JWT AUTH MW
-// routes.use(authMW);
+routes.use(authMW);
+
+//* ALL ROUTES BELOW WILL REQUIRE JWT AUTH *//
 
 // RECIPIENTS
 routes.post('/recipients', RecipientController.store);
@@ -56,6 +65,6 @@ routes.post(
 );
 
 // DELIVERS
-routes.post('/delivers', DeliverController.store);
+routes.post('/deliveries', DeliveryController.store);
 
 export default routes;

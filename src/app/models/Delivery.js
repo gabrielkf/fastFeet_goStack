@@ -1,6 +1,6 @@
 import { DataTypes, Model } from 'sequelize';
 
-class Deliver extends Model {
+class Delivery extends Model {
   static init(sequelize) {
     super.init(
       {
@@ -11,7 +11,8 @@ class Deliver extends Model {
         cancelled_at: DataTypes.DATE
       },
       {
-        sequelize
+        sequelize,
+        tableName: 'deliveries'
       }
     );
     return this;
@@ -30,4 +31,4 @@ class Deliver extends Model {
   }
 }
 
-export default Deliver;
+export default Delivery;

@@ -10,8 +10,7 @@ class User extends Model {
         password_hash: DataTypes.STRING
       },
       {
-        sequelize,
-        tableName: 'users'
+        sequelize
       }
     );
 

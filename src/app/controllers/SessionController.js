@@ -11,7 +11,9 @@ class SessionController {
       where: { email }
     });
     if (!user) {
-      return res.status(401).json({ error: 'User not found' });
+      return res
+        .status(401)
+        .json({ error: 'User not found' });
     }
 
     const { id, name } = user;
